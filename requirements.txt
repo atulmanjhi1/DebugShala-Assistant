@@ -1,4 +1,3 @@
-streamlit
 phi-assistant
 phi-llm-groq
 numpy
@@ -7,3 +6,4 @@ python-dotenv
 sentence-transformers
 pandas
 requests
+streamlit
