@@ -1,6 +1,7 @@
 streamlit
 numpy
 phidata
+groq
 faiss-cpu
 python-dotenv
 sentence-transformers
