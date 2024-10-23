@@ -7,11 +7,18 @@ from dotenv import load_dotenv
 from sentence_transformers import SentenceTransformer
 import os
 import pandas as pd
-import requests
-from io import StringIO
+from supabase import create_client, Client
+
 
 # Load environment variables
 load_dotenv()
+
+# Initialize Supabase client
+@st.cache_resource
+def init_supabase():
+    url = os.getenv("SUPABASE_URL")
+    key = os.getenv("SUPABASE_KEY")
+    return create_client(url, key)
 
 # Initialize the assistant
 @st.cache_resource
@@ -21,19 +28,19 @@ def get_assistant():
         description="I am a helpful AI assistant powered by Groq. How can I assist you today?",
     )
 
-# Function to fetch data from Google Drive CSV
+# Function to fetch data from Supabase
 @st.cache_data
 def fetch_trainer_data():
-    # Replace this URL with the actual shareable link to your CSV file
-    url = "https://drive.google.com/uc?id=1C4kVjX7Uba27gQypAtAOX6uKtzucXzYQ"
-    
+    supabase = init_supabase()
     try:
-        response = requests.get(url)
-        response.raise_for_status()
-        data = StringIO(response.text)
-        df = pd.read_csv(data)
-        # Assuming the CSV has columns: id, name, domain, skills, experience, links
-        return df.values.tolist()
+        response = supabase.table("persons").select("*").execute()
+        
+        # Check if the response contains data
+        if response.data:
+            return [list(person.values()) for person in response.data]
+        else:
+            st.error("No data found.")
+            return []
     except Exception as e:
         st.error(f"Error fetching data: {e}")
         return []
@@ -79,7 +86,7 @@ def create_trainer_button(trainer_name, link):
     st.markdown(f'<a href="{link}" target="_blank"><button style="background-color:#4CAF50; color:white; padding:10px; border:none; border-radius:4px; cursor:pointer;">Chat with {trainer_name}</button></a>', unsafe_allow_html=True)
 
 # Streamlit app
-st.title("Chat with Debugshala Assistant")
+st.title("Chat with Groq-powered Assistant")
 
 # Input text box for user question
 user_input = st.text_input("What do you want to know?", "")
@@ -97,7 +104,7 @@ if st.button("Ask"):
             response = "".join([chunk for chunk in response_generator if isinstance(chunk, str)])
             st.markdown(response)
 
-            # Fetch trainer data from Google Drive CSV
+            # Fetch trainer data from Supabase
             trainer_data = fetch_trainer_data()
 
             # Generate embeddings from CSV data
