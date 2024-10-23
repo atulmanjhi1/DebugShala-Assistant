@@ -1,0 +1,8 @@
+phi-assistant==0.3.0
+phi-llm-groq==0.1.0
+numpy==1.26.1
+faiss-cpu==1.7.4
+python-dotenv==1.0.0
+sentence-transformers==2.2.2
+pandas==2.1.1
+requests==2.31.0
