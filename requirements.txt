@@ -1,5 +1,6 @@
 streamlit
 numpy
+supabase
 phidata
 groq
 faiss-cpu
