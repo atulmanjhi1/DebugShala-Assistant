@@ -1,7 +1,6 @@
 phi-assistant
 phi-llm-groq
 numpy
-faiss-cpu
 python-dotenv
 sentence-transformers
 pandas
