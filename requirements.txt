@@ -1,7 +1,8 @@
+streamlit
 numpy
-faiss-cpu==1.7.4  # Ensure compatibility with prebuilt binaries
+faiss-cpu
 python-dotenv
 sentence-transformers
 pandas
 requests
-streamlit
+openai
