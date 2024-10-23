@@ -1,5 +1,4 @@
-phi-assistant==0.3.0
-phi-llm-groq==0.1.0
+streamlit==1.24.0
 numpy==1.26.1
 faiss-cpu==1.7.4
 python-dotenv==1.0.0
